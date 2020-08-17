@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: fakemsa-mail-sender
+  labels:
+    service-name: fakemsa-mail-sender
+spec:
+  containers:
+    - name: mail-sender
+      image: victolee/fakemsa:1.0.0
+      ports:
+        - containerPort: 8080
