@@ -6,14 +6,18 @@ type: Opaque
 data:
   username: QWRtaW5pc3RyYXRvcg==  # Administrator
   password: cGFzc3dvcmQ=          # password
+
 ---
+
 apiVersion: couchbase.com/v2
 kind: CouchbaseBucket
 metadata:
-  name: default
+  name: mail-log
 spec:
   memoryQuota: 128Mi
+
 ---
+
 apiVersion: couchbase.com/v2
 kind: CouchbaseCluster
 metadata:
@@ -22,6 +26,10 @@ spec:
   image: couchbase/server:6.5.1
   security:
     adminSecret: cb-example-auth
+  networking:
+    exposeAdminConsole: true
+    adminConsoleServices:
+      - data
   buckets:
     managed: true
   servers:

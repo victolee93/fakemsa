@@ -14,7 +14,7 @@ public class CouchbaseConfig extends AbstractCouchbaseConfiguration {
 
     @Override
     public String getBucketName() {
-        return "example";
+        return "mail-log";
     }
 
     @Override
