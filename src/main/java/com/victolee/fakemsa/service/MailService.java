@@ -1,6 +1,8 @@
 package com.victolee.fakemsa.service;
 
+import com.couchbase.client.java.Bucket;
 import com.victolee.fakemsa.dto.MailDto;
+import com.victolee.fakemsa.dto.MailLogDto;
 import com.victolee.fakemsa.entity.MailLogEntity;
 import com.victolee.fakemsa.repository.MailLogRepository;
 import com.victolee.fakemsa.util.MailHandler;
@@ -10,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -18,7 +22,10 @@ public class MailService {
     private MailLogRepository mailLogRepository;
     private static final String FROM_ADDRESS = "dntmddlekd48@gmail.com";
 
-    public void mailSend(MailDto mailDto) {
+    /**
+     * 메일 발송하기
+     */
+    public boolean mailSend(MailDto mailDto) {
         try {
             MailHandler mailHandler = new MailHandler(mailSender);
 
@@ -41,6 +48,22 @@ public class MailService {
         catch(Exception e){
             e.printStackTrace();
         }
+
+        return true;
+    }
+
+    /**
+     * 발송 로그 리스트 조회
+     */
+    public List<MailLogDto> getSendLog(String date) {
+        List<MailLogDto> mailLogDtos = new ArrayList<>();
+        List<MailLogEntity> mailLogEntities = mailLogRepository.findAllByDateContaining(date);
+
+        for (MailLogEntity mailLogEntity : mailLogEntities) {
+            mailLogDtos.add(this.convertEntityToDto(mailLogEntity));
+        }
+
+        return mailLogDtos;
     }
 
     /*
@@ -62,5 +85,14 @@ public class MailService {
                 .build();
 
         return mailLogEntity;
+    }
+
+    private MailLogDto convertEntityToDto(MailLogEntity mailLogEntity) {
+        return MailLogDto.builder()
+                .address(mailLogEntity.getAddress())
+                .title(mailLogEntity.getTitle())
+                .message(mailLogEntity.getMessage())
+                .date(mailLogEntity.getDate())
+                .build();
     }
 }

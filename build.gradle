@@ -17,8 +17,13 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
+    /* kafka */
     implementation 'org.springframework.kafka:spring-kafka'
+    /* couchbase */
     compile group: 'org.springframework.data', name: 'spring-data-couchbase', version: '4.0.3.RELEASE'
+    /* swagger */
+    compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
